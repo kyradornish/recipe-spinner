@@ -1,0 +1,76 @@
+{% extends "layout.html" %} 
+
+{% block title %}{{ super() }} | Profile{% endblock %} 
+
+{% block content %} 
+
+<div class="main">
+    <div class="row">
+        <div class="col-md-12">
+             <h1>Hi {{ current_user.first_name }}!</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Saved Recipes</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row rcard">
+        <div class="col-md-12">
+            <a href="https://placeholder.com"><img src="http://via.placeholder.com/100x100">
+            </a>
+            <a href="https://placeholder.com"><img src="http://via.placeholder.com/100x100">
+            </a>
+            <a href="https://placeholder.com"><img src="http://via.placeholder.com/100x100">
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Grocery List</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="#">
+                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
+            </a>Ingredient
+            <a href="#">
+                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
+            </a>Ingredient
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="#">
+                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
+            </a>Ingredient
+            <a href="#">
+                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
+            </a>Ingredient
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Weekly Meal Planner</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row rcard">
+        <div class="col-md-12">
+            <a href="https://placeholder.com">
+                <img src="http://via.placeholder.com/100x100">
+            </a>
+            <a href="https://placeholder.com">
+                <img src="http://via.placeholder.com/100x100">
+            </a>
+            <a href="https://placeholder.com">
+                <img src="http://via.placeholder.com/100x100">
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout.html" %} 
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}| Results{% endblock %} 
+
+{% block content %} 
+
+<div class="main">
+    <div class="row">
+        <div class="col-md-12 results deleteingredient">
+             {{ wtf.quick_form(form) }}
+                <p><a href="#"><img src="/static/images/circle-x-2x.png" class="deleteingredient"></a>{{ ingredients }}</p>
+            <hr>
+        </div>
+    </div>
+    <div class="row filter centertext">
+        <div class="col-md-12">
+            <a href="#">Cuisine</a>
+            <a href="#">Popularity</a>
+            <a href="#">Difficulty</a>
+        </div>
+    </div>
+    <div class="row rcard">
+        {% for result in results %}
+            <div>
+                {{ result.title }}<br>
+                <a href="/recipe">
+                    <img src="{{ result.image }}">
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

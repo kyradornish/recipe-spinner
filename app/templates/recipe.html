@@ -1,0 +1,48 @@
+{% extends "layout.html" %} 
+
+{% block title %}{{ super() }} | Recipe{% endblock %} 
+
+{% block content %}
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <p><a href="#">Return to Search</a></p>
+                <h1>Title of Recipe</h1>
+                <hr>
+            </div>
+        </div>
+        <div class="row recipe">
+            <div class="col-md-6">
+                <img src="http://via.placeholder.com/350x350">
+                <div class="addinfo">
+                        <a href="#">Nutritional Info</a>
+                        <a href="#">Save Recipe</a>
+                        <a href="#">Add to Weekly Meal Planner</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3>Ingredients:</h3>
+                <ul>
+                    <li>Ingredient</li>
+                    <li>Ingredient</li>
+                    <li>Ingredient</li>
+                    <li>Ingredient</li>
+                    <li>Ingredient</li>
+                    <li>Ingredient</li>
+                    <li>Ingredient</li>
+                </ul>
+            </div>
+                <hr>
+        </div>
+        <div class="row">
+            <h3>Directions:</h3>
+            <ul>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
