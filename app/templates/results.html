@@ -9,7 +9,9 @@
     <div class="row">
         <div class="col-md-12 results deleteingredient">
              {{ wtf.quick_form(form) }}
-                <p><a href="#"><img src="/static/images/circle-x-2x.png" class="deleteingredient"></a>{{ ingredients }}</p>
+             {% for ingredient in ingredients%}
+                <p><a href="#"><img src="/static/images/circle-x-2x.png" class="deleteingredient"></a>{{ ingredient }}</p>
+            {% endfor %}
             <hr>
         </div>
     </div>
@@ -20,13 +22,13 @@
             <a href="#">Difficulty</a>
         </div>
     </div>
-    <div class="row rcard">
-        {% for result in results %}
-            <div>
-                {{ result.title }}<br>
-                <a href="/recipe">
-                    <img src="{{ result.image }}">
+    <div class="row">
+        {% for result in recipeinfo %}
+            <div class="col-md-4 rcard">
+                <a href="{{ result['sourceUrl'] }} " target="_blank">
+                    <img class="resultimg" src="{{ result['image'] }}">
                 </a>
+                <p>{{ result['title'] }}</p>
             </div>
         {% endfor %}
     </div>

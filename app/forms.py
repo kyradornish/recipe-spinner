@@ -55,11 +55,9 @@ class RecipeSearch(FlaskForm):
             'fillIngredients': False,
             'ingredients': ingredients,
             'limitLicense': False,
-            'number': 5,
+            'number': 10,
             'ranking': 1
         }
-
-        # api_key = os.environ['api_key']
 
         endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients"
 
@@ -70,9 +68,26 @@ class RecipeSearch(FlaskForm):
 
         r = requests.get(endpoint, params=payload, headers=headers)
         results = r.json()
-        # title = results[0]['title']
-        # print(title)
-        # print(r.url)
-        # print(results)
 
         return results
+
+    def getRecipeURL(self, id):
+        payload = {
+            'id': id
+        }
+
+        endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/{}/information".format(id)
+
+        headers = {
+            "X-Mashape-Key": "OcWXtWKiwJmsh9je6Ev8yYDRO2Bpp1bHFrqjsnMcAjT0dmqtZg",
+            "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
+        }
+
+        r = requests.get(endpoint, params=payload, headers=headers)
+        results = r.json()
+
+        return results
+
+class AddIngredient(FlaskForm):
+    ingredient = StringField('Add Ingredient', validators=[DataRequired()])
+    add_ingredient = SubmitField('Add Ingredient')

@@ -1,31 +1,38 @@
 from app import app, db 
 from flask import render_template, url_for, redirect, flash, request, session
-from app.forms import LoginForm, RegistrationForm, RecipeSearch
+from app.forms import LoginForm, RegistrationForm, RecipeSearch, AddIngredient
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
 
 
-@app.route("/", methods = ['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def index():
     form = RecipeSearch()
     if form.validate_on_submit():
         ingredients = form.ingredient.data
         resultjson = form.getRecipeByIngredients(ingredients)
-        return render_template('results.html', results=resultjson, ingredients=ingredients, form=form)
-    return render_template("index.html", form=form)
+        session["resultjson"] = resultjson
+        resultid = []
+        for result in resultjson:
+            resultid.append(result["id"])
+        recipeinfo = []
+        for id in resultid:
+            recipeinfo.append(form.getRecipeURL(id))
+        return render_template('results.html', results=resultjson, recipeinfo=recipeinfo, ingredients=ingredients, form=form)
+    return render_template("index.html", form=form, title="Home")
 
 
 @app.route("/results", methods=['GET', 'POST'])
 def results():
-    form = RecipeSearch()
-    return render_template("results.html", form=form)
+    form = AddIngredient()
+    return render_template("results.html", form=form, resultsid=results, title="Results")
 
 @app.route('/profile/<username>')
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first()
-    return render_template('profile.html', user=user)
+    return render_template('profile.html', user=user, title="Profile")
 
 
 @app.route("/planner")
@@ -41,8 +48,6 @@ def saved():
 @app.route("/recipe")
 def recipe():
     return render_template("recipe.html")
-
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,27 +88,3 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
-
-# def getRecipeByIngredients():
-#     payload = {
-#         'fillIngredients': False,
-#         'ingredients': ingredients,
-#         'limitLicense': False,
-#         'number': 5,
-#         'ranking': 1
-#     }
-
-#     api_key = os.environ['api_key']
-
-#     endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients"
-
-#     headers = {
-#         "X-Mashape-Key": "OcWXtWKiwJmsh9je6Ev8yYDRO2Bpp1bHFrqjsnMcAjT0dmqtZg",
-#         "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
-#     }
-
-#     r = requests.get(endpoint, params=payload, headers=headers)
-#     results = r.json()
-#     title = results[0]['title']
-#     print(title)

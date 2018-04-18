@@ -107,7 +107,7 @@ body {
 }
 
 .rcard img {
-    margin: 10px 20px 40px 20px;
+    margin: 10px;
 }
 
 .rcard a:hoover {
@@ -115,8 +115,20 @@ body {
 }
 
 .rcard {
-    font-size: 12px;
     text-align: center;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.results input {
+    width: 80%;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+}
+
+.resultimg {
+    max-width: 230px;
+    max-height: 200px;
 }
 
 .centertext {
@@ -152,11 +164,6 @@ body {
     color: white;
 }
 
-.results input {
-    width: 80%;
-    border: 1px solid lightgray;
-    border-radius: 4px;
-}
 
 .home input {
     width: 100%;
@@ -209,18 +216,16 @@ body {
 footer {
     padding: 25px;
     background-color: #EEE;
+    color: #7FB3D5;
+    font-size: 0.7em;
 }
 
-footer ul {
-    list-style: None;
-}
-
-footer ul li a {
-    color: black;
+footer a {
+    color: #7FB3D5;
     text-decoration: none;
 }
 
-footer ul li a:hover {
+footer a:hover {
     color: #ff9980;
     text-decoration: none;
 }
