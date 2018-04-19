@@ -19,14 +19,13 @@ def index():
 def results(ingredient, remove):
     form = RecipeSearch()
     ingredients = session["ingredients"]
-    if ingredient not in ingredients:
+    if ingredient not in ingredients and remove != ingredient:
         ingredients.append(ingredient)
     elif remove == ingredient:
         for i in range(len(ingredients)):
             if ingredient == ingredients[i]:
                 session['ingredients'].pop(i)
                 break
-                print(ingredients)
     if form.validate_on_submit():
         if form.ingredient.data:
             if form.ingredient.data in ingredients:
