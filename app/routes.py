@@ -9,24 +9,64 @@ from werkzeug.urls import url_parse
 @app.route("/", methods=['GET', 'POST'])
 def index():
     form = RecipeSearch()
+    ingredients = session["ingredients"]
     if form.validate_on_submit():
-        ingredients = form.ingredient.data
-        resultjson = form.getRecipeByIngredients(ingredients)
-        session["resultjson"] = resultjson
-        resultid = []
-        for result in resultjson:
-            resultid.append(result["id"])
-        recipeinfo = []
-        for id in resultid:
-            recipeinfo.append(form.getRecipeURL(id))
-        return render_template('results.html', results=resultjson, recipeinfo=recipeinfo, ingredients=ingredients, form=form)
+        ingredient=form.ingredient.data
+        return redirect(url_for('results', ingredient=ingredient, remove='False'))
     return render_template("index.html", form=form, title="Home")
 
+@app.route("/results/<ingredient>/<remove>", methods=['GET', 'POST'])
+def results(ingredient, remove):
+    form = RecipeSearch()
+    ingredients = session["ingredients"]
+    if ingredient not in ingredients:
+        ingredients.append(ingredient)
+    elif remove == ingredient:
+        for i in range(len(ingredients)):
+            if ingredient == ingredients[i]:
+                session['ingredients'].pop(i)
+                break
+                print(ingredients)
+    if form.validate_on_submit():
+        if form.ingredient.data:
+            if form.ingredient.data in ingredients:
+                flash('You already entered that ingredient.')
+            else:
+                ingredients.append(form.ingredient.data)
+    ingredient_list = ""
+    print(ingredients)
+    ingredients = session["ingredients"]
+    print(ingredients)    
+    for ingredient in ingredients:
+        ingredient_list += ingredient + ","
+    resultjson = form.getRecipeByIngredients(ingredient_list)
+    session["resultjson"] = resultjson
+    resultid = []
+    for result in resultjson:
+        resultid.append(result["id"])
+    recipeinfo = []
+    for id in resultid:
+        recipeinfo.append(form.getRecipeURL(id))
+    return render_template('results.html', results=resultjson, recipeinfo=recipeinfo, ingredients=ingredients, form=form, title="Results")
 
-@app.route("/results", methods=['GET', 'POST'])
-def results():
-    form = AddIngredient()
-    return render_template("results.html", form=form, resultsid=results, title="Results")
+@app.route('/remove/<ingredient>')
+def remove(ingredient):
+    ingredients = session["ingredients"]
+    for i in range(len(ingredients)):
+        if ingredient == ingredients[i]:
+            print(ingredients[i])
+            print(ingredient)
+            print(ingredients)
+            session['ingredients'].pop(i)
+            print(ingredients)
+            return redirect(url_for('results', ingredients=ingredients))
+    
+
+@app.route('/clear')
+def clear():
+  session["ingredients"].clear()
+  flash("You have cleared your list of ingredients, start a new search by entering ingredients.")
+  return redirect(url_for('index'))
 
 @app.route('/profile/<username>')
 @login_required

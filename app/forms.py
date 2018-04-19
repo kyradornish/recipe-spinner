@@ -55,7 +55,7 @@ class RecipeSearch(FlaskForm):
             'fillIngredients': False,
             'ingredients': ingredients,
             'limitLicense': False,
-            'number': 10,
+            'number': 5,
             'ranking': 1
         }
 
@@ -90,4 +90,4 @@ class RecipeSearch(FlaskForm):
 
 class AddIngredient(FlaskForm):
     ingredient = StringField('Add Ingredient', validators=[DataRequired()])
-    add_ingredient = SubmitField('Add Ingredient')
+    submit2 = SubmitField('Add Ingredient')

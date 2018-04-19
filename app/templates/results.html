@@ -6,10 +6,28 @@
 {% block content %} 
 
 <div class="main">
+    {% with messages = get_flashed_messages() %} 
+        {% if messages %} 
+            {% for message in messages %}
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endfor %} 
+        {% endif %} 
+    {% endwith %}
+
     <div class="row">
-        <div class="col-md-12 results deleteingredient">
+        <div class="col-md-12 results deleteingredient"> 
              {{ wtf.quick_form(form) }}
-                <p><a href="#"><img src="/static/images/circle-x-2x.png" class="deleteingredient"></a>{{ ingredients }}</p>
+            <p>
+                {% for ingredient in ingredients %}
+                    <a href="{{ url_for('results', ingredient=ingredient, remove=ingredient )}}"><img src="/static/images/circle-x-2x.png" class="deleteingredient"></a>{{ ingredient }}
+                {% endfor %}
+                <a href="{{ url_for('clear') }}">
+                    <button type="button" class="btn btn-sm btn-new float-right">New Search</button>
+                </a>
+            </p>
             <hr>
         </div>
     </div>
