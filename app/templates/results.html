@@ -20,31 +20,32 @@
     <div class="row">
         <div class="col-md-12 results deleteingredient"> 
              {{ wtf.quick_form(form) }}
-            <p>
+             <div class="row">
+                <div class="col-md-10">
                 {% for ingredient in ingredients %}
                     <a href="{{ url_for('results', ingredient=ingredient, remove=ingredient )}}"><img src="/static/images/circle-x-2x.png" class="deleteingredient"></a>{{ ingredient }}
                 {% endfor %}
+                </div>
+                <div class="col-md-2">
                 <a href="{{ url_for('clear') }}">
-                    <button type="button" class="btn btn-sm btn-new float-right">New Search</button>
+                    <button type="button" class="btn btn-sm btn-new pull-right">New Search</button>
                 </a>
-            </p>
+                </div>
+            </div>
             <hr>
-        </div>
-    </div>
-    <div class="row filter centertext">
-        <div class="col-md-12">
-            <a href="#">Cuisine</a>
-            <a href="#">Popularity</a>
-            <a href="#">Difficulty</a>
         </div>
     </div>
     <div class="row">
         {% for result in recipeinfo %}
             <div class="col-md-4 rcard">
-                <a href="{{ result['sourceUrl'] }} " target="_blank">
+                <a href="{{ url_for('recipe', r_id=result['id']) }} ">
                     <img class="resultimg" src="{{ result['image'] }}">
                 </a>
-                <p>{{ result['title'] }}</p>
+                <a href="{{ url_for('recipe', r_id=result['id']) }} ">{{ result['title'] }}</a><br>
+                <p class="sub-text"><i>Number of Likes:<b> {{ result['aggregateLikes']}}</b></i></p>
+                <a href="{{ url_for('save', r_id=result['id']) }}">
+                    <button type="button" class="btn btn-sm btn-save pull-right">Save Recipe</button>
+                </a>
             </div>
         {% endfor %}
     </div>

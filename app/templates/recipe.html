@@ -1,48 +1,67 @@
 {% extends "layout.html" %} 
 
-{% block title %}{{ super() }} | Recipe{% endblock %} 
+{% block title %}| Recipe{% endblock %} 
 
 {% block content %}
-    <div class="main">
-        <div class="row">
-            <div class="col-md-12">
-                <p><a href="#">Return to Search</a></p>
-                <h1>Title of Recipe</h1>
-                <hr>
-            </div>
-        </div>
-        <div class="row recipe">
-            <div class="col-md-6">
-                <img src="http://via.placeholder.com/350x350">
-                <div class="addinfo">
-                        <a href="#">Nutritional Info</a>
-                        <a href="#">Save Recipe</a>
-                        <a href="#">Add to Weekly Meal Planner</a>
+<div class="main">
+    {% with messages = get_flashed_messages() %} 
+        {% if messages %} 
+            {% for message in messages %}
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>{{ message }}</strong>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <h3>Ingredients:</h3>
-                <ul>
-                    <li>Ingredient</li>
-                    <li>Ingredient</li>
-                    <li>Ingredient</li>
-                    <li>Ingredient</li>
-                    <li>Ingredient</li>
-                    <li>Ingredient</li>
-                    <li>Ingredient</li>
-                </ul>
-            </div>
-                <hr>
+            {% endfor %} 
+        {% endif %} 
+    {% endwith %}
+
+    <div class="row">
+        <div class="col-md-12 breadcrumbs">
+            <a href="{{ url_for('results', ingredient=False, remove=False) }}">
+                < Back to Search Results</a>
         </div>
-        <div class="row">
-            <h3>Directions:</h3>
+        <div class="col-md-12">
+            {% for result in recipeinfo %}
+            <h1>{{ result['title'] }}</h1>
+        </div>
+    </div>
+    <div class="row recipe">
+        <div class="col-md-6">
+            <img src="{{ result['image'] }}" class="recipe_img img-fluid">
+            <div class="addinfo">
+                    <a href="{{ result['sourceUrl'] }}" target="_blank">Source Recipe</a>
+                    <a href="{{ url_for('save', r_id=result['id']) }}">Save Recipe</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p>
+               <b>Ready in:</b> {{ result['readyInMinutes'] }} minutes
+                <br> 
+                <b>Servings:</b> {{ result['servings'] }}<br>
+                <b>Number of Likes:</b> {{ result['aggregateLikes'] }}
+            
+            </p>
+            <h3>Ingredients:</h3>
             <ul>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis nobis commodi accusamus quibusdam cum non pariatur corrupti, et consequuntur veniam earum accusantium eius deserunt? Temporibus praesentium sed id nulla asperiores.</li>
+                {% for i in result['extendedIngredients'] %}
+                <li>{{ i['originalString'] }}</li>
+                {% endfor %}
             </ul>
         </div>
     </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12"><h3>Directions:</h3></div>
+        <div class="col-md-12">
+        <ul>
+            {% for i in result['analyzedInstructions'] %}
+                {% for f in i['steps'] %}
+                        <li>{{ f['step'] }}</li>
+                    {% endfor %} 
+                {% endfor %}
+        </ul>
+        {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

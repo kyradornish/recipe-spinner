@@ -1,8 +1,7 @@
 from app import app, db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
-# user_save = db.Table('roles_users',db.Column('user_id', db.Integer(), db.ForeignKey('user.id')), db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+from sqlalchemy import ForeignKey
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,9 +10,9 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
-    username = db.Column(db.String(50))
-    # roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
-
+    username = db.Column(db.String(50), unique=True)
+    recipe = db.relationship('Saved', backref=db.backref('recipe', lazy='joined'))
+    
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -40,11 +39,7 @@ class User(db.Model, UserMixin):
 def load_user(id):
     return User.query.get(int(id))
 
-# class Saved(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     body = db.Column(db.String(140))
-#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-#     def __repr__(self):
-#         return '<Post {}>'.format(self.body)
+class Saved(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    recipe_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))

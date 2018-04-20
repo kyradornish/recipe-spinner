@@ -1,15 +1,15 @@
 from app import app, db 
 from flask import render_template, url_for, redirect, flash, request, session
-from app.forms import LoginForm, RegistrationForm, RecipeSearch, AddIngredient
+from app.forms import LoginForm, RegistrationForm, RecipeSearch, getRecipeByIngredients, getRecipeURL
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Saved
 from werkzeug.urls import url_parse
 
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    session["ingredients"].clear()
     form = RecipeSearch()
-    ingredients = session["ingredients"]
     if form.validate_on_submit():
         ingredient=form.ingredient.data
         return redirect(url_for('results', ingredient=ingredient, remove='False'))
@@ -33,61 +33,67 @@ def results(ingredient, remove):
             else:
                 ingredients.append(form.ingredient.data)
     ingredient_list = ""
-    print(ingredients)
-    ingredients = session["ingredients"]
-    print(ingredients)    
+    ingredients = session["ingredients"]  
     for ingredient in ingredients:
         ingredient_list += ingredient + ","
-    resultjson = form.getRecipeByIngredients(ingredient_list)
+    resultjson = getRecipeByIngredients(ingredient_list)
     session["resultjson"] = resultjson
     resultid = []
     for result in resultjson:
         resultid.append(result["id"])
     recipeinfo = []
     for id in resultid:
-        recipeinfo.append(form.getRecipeURL(id))
-    return render_template('results.html', results=resultjson, recipeinfo=recipeinfo, ingredients=ingredients, form=form, title="Results")
+        recipeinfo.append(getRecipeURL(id))
+    return render_template('results.html', results=resultjson, recipeinfo=recipeinfo, ingredients=ingredients, form=form, title="Results")    
 
-@app.route('/remove/<ingredient>')
-def remove(ingredient):
-    ingredients = session["ingredients"]
-    for i in range(len(ingredients)):
-        if ingredient == ingredients[i]:
-            print(ingredients[i])
-            print(ingredient)
-            print(ingredients)
-            session['ingredients'].pop(i)
-            print(ingredients)
-            return redirect(url_for('results', ingredients=ingredients))
-    
+@app.route("/recipe/<r_id>")
+def recipe(r_id):
+    recipeinfo = [getRecipeURL(r_id)]
+    return render_template("recipe.html", recipeinfo=recipeinfo, title="Recipe")
 
 @app.route('/clear')
 def clear():
   session["ingredients"].clear()
   flash("You have cleared your list of ingredients, start a new search by entering ingredients.")
-  return redirect(url_for('index'))
+  return redirect(url_for('results', ingredient=False, remove='False'))
+
+@app.route('/save/<r_id>', methods=['GET', 'POST'])
+def save(r_id):
+    if current_user.is_anonymous:
+        flash("You must be logged in to save recipes.")
+        return redirect(url_for('results', ingredient=False, remove=False))
+    user_recipes = Saved.query.filter_by(user_id=current_user.id).all()
+    for recipe in user_recipes:
+        if int(r_id) == recipe.recipe_id:
+            flash("You have already saved this recipe.")
+            return redirect(url_for('results', ingredient=False, remove=False))
+    saved_recipe = Saved(recipe_id=r_id, user_id=current_user.id)
+    db.session.add(saved_recipe)
+    db.session.commit()
+    flash("Recipe saved!")
+    return redirect(url_for('results', ingredient=False, remove='False'))
+
+@app.route('/remove/<r_id>', methods=['GET', 'POST'])
+@login_required
+def remove(r_id):
+    Saved.query.filter_by(user_id=current_user.id, recipe_id=r_id).delete()
+    db.session.commit()
+    flash('You have successfully removed the recipe.')
+    return redirect(url_for('profile', username=current_user.username))
+
 
 @app.route('/profile/<username>')
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first()
-    return render_template('profile.html', user=user, title="Profile")
-
-
-@app.route("/planner")
-def planner():
-    return render_template("planner.html")
-
-
-@app.route("/saved")
-def saved():
-    return render_template("saved.html")
-
-
-@app.route("/recipe")
-def recipe():
-    return render_template("recipe.html")
-
+    user_recipes = Saved.query.filter_by(user_id=current_user.id).all()
+    recipe_list = []
+    for recipe in user_recipes:
+        recipe_list.append(recipe.recipe_id)
+    recipeinfo = []
+    for r_id in recipe_list:
+        recipeinfo.append(getRecipeURL(r_id))
+    return render_template('profile.html', user=user, title="Profile", recipeinfo=recipeinfo)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -106,7 +112,6 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title="Log In", form=form)
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -122,8 +127,12 @@ def register():
         return redirect(url_for('profile', username=form.username.data))
     return render_template('register.html', title="Register", form=form)
 
-
 @app.route('/logout')
 def logout():
+    session["ingredients"].clear()
     logout_user()
     return redirect(url_for('login'))
+
+@app.route("/planner")
+def planner():
+    return render_template("planner.html")

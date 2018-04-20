@@ -47,47 +47,43 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please use a different username.')
 
 class RecipeSearch(FlaskForm):
-    ingredient = StringField('Ingredient', validators=[DataRequired()])
+    ingredient = StringField('Ingredient: ', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
-    def getRecipeByIngredients(self, ingredients):
-        payload = {
-            'fillIngredients': False,
-            'ingredients': ingredients,
-            'limitLicense': False,
-            'number': 5,
-            'ranking': 1
-        }
+def getRecipeByIngredients(ingredients):
+    payload = {
+        'fillIngredients': False,
+        'ingredients': ingredients,
+        'limitLicense': False,
+        'number': 6,
+        'ranking': 1
+    }
 
-        endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients"
+    endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients"
 
-        headers = {
-            "X-Mashape-Key": "OcWXtWKiwJmsh9je6Ev8yYDRO2Bpp1bHFrqjsnMcAjT0dmqtZg",
-            "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
-        }
+    headers = {
+        "X-Mashape-Key": "OcWXtWKiwJmsh9je6Ev8yYDRO2Bpp1bHFrqjsnMcAjT0dmqtZg",
+        "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
+    }
 
-        r = requests.get(endpoint, params=payload, headers=headers)
-        results = r.json()
+    r = requests.get(endpoint, params=payload, headers=headers)
+    results = r.json()
 
-        return results
+    return results
 
-    def getRecipeURL(self, id):
-        payload = {
-            'id': id
-        }
+def getRecipeURL(id):
+    payload = {
+        'id': id
+    }
 
-        endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/{}/information".format(id)
+    endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/{}/information".format(id)
 
-        headers = {
-            "X-Mashape-Key": "OcWXtWKiwJmsh9je6Ev8yYDRO2Bpp1bHFrqjsnMcAjT0dmqtZg",
-            "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
-        }
+    headers = {
+        "X-Mashape-Key": "OcWXtWKiwJmsh9je6Ev8yYDRO2Bpp1bHFrqjsnMcAjT0dmqtZg",
+        "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
+    }
 
-        r = requests.get(endpoint, params=payload, headers=headers)
-        results = r.json()
+    r = requests.get(endpoint, params=payload, headers=headers)
+    results = r.json()
 
-        return results
-
-class AddIngredient(FlaskForm):
-    ingredient = StringField('Add Ingredient', validators=[DataRequired()])
-    submit2 = SubmitField('Add Ingredient')
+    return results

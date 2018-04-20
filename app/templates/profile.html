@@ -8,7 +8,7 @@
     {% with messages = get_flashed_messages() %} 
         {% if messages %} 
             {% for message in messages %}
-                <div class="alert alert-light">
+                <div class="alert alert-info">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <strong>{{ message }}</strong>
                 </div>
@@ -17,6 +17,9 @@
     {% endwith %}
 
     <div class="row">
+        <div class="col-md-12 breadcrumbs">
+            <a href="{{ url_for('results', ingredient=False, remove=False) }}">< Back to Search Results</a>
+        </div>
         <div class="col-md-12">
              <h1>Hi {{ current_user.first_name }}!</h1>
         </div>
@@ -29,59 +32,27 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <a href="https://placeholder.com"><img src="http://via.placeholder.com/100x100">
-            </a>
-            <a href="https://placeholder.com"><img src="http://via.placeholder.com/100x100">
-            </a>
-            <a href="https://placeholder.com"><img src="http://via.placeholder.com/100x100">
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Grocery List</h2>
-            <hr>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <a href="#">
-                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
-            </a>Ingredient
-            <a href="#">
-                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
-            </a>Ingredient
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <a href="#">
-                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
-            </a>Ingredient
-            <a href="#">
-                <img src="/static/images/circle-x-2x.png" class="deleteingredient">
-            </a>Ingredient
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Weekly Meal Planner</h2>
-            <hr>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <a href="https://placeholder.com">
-                <img src="http://via.placeholder.com/100x100">
-            </a>
-            <a href="https://placeholder.com">
-                <img src="http://via.placeholder.com/100x100">
-            </a>
-            <a href="https://placeholder.com">
-                <img src="http://via.placeholder.com/100x100">
-            </a>
-        </div>
+        {% if recipeinfo == [] %}
+            <div class="col-md-12 centertext">
+                <p>You have no saved recipes.</p>
+            </div>
+        {% endif %}
+         {% for result in recipeinfo %}
+            <div class="col-md-4 rcard">
+                <a href="{{ url_for('recipe', r_id=result['id']) }}">
+                    <img class="resultimg" src="{{ result['image'] }}">
+                </a>
+                <a href="{{ url_for('recipe', r_id=result['id']) }}">{{ result['title'] }}</a><br>
+                <p class="sub-text">
+                    <i>Number of Likes:
+                        <b> {{ result['aggregateLikes']}}</b>
+                    </i>
+                </p>
+                <a href="{{ url_for('remove', r_id=result['id']) }}">
+                    <button type="button" class="btn btn-sm btn-save pull-right">Remove Recipe</button>
+                </a>
+            </div>
+         {% endfor %}
     </div>
 </div>
 {% endblock %}
