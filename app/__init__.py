@@ -4,6 +4,9 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from logging.handlers import SMTPHandler, RotatingFileHandler
+import os
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -11,30 +14,34 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+mail = Mail(app)
 
 from app import routes, models
 
 bootstrap = Bootstrap(app)
 
-# if __name__ == '__main__':
-#     app.run(debug=True, host="0.0.0.0", port=8082)
+if not app.debug:
+    if app.config['MAIL_SERVER']:
+        auth = None
+        if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
+            auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
+        secure = None
+        if app.config['MAIL_USE_TLS']:
+            secure = ()
+        mail_handler = SMTPHandler(
+            mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
+            fromaddr='no-reply@' + app.config['MAIL_SERVER'],
+            toaddrs=app.config['ADMINS'], subject='Microblog Failure',
+            credentials=auth, secure=secure)
+        mail_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(mail_handler)
 
-# Connecting to API SDK
-# from rapidconnect import RapidConnect
-# import unirest
-# rapid = RapidConnect('recipe-spinner_5ac3931ee4b0a62b51d0cfe3', '175250b7-3cd5-4660-8b45-58e0cc706f32')
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    file_handler = RotatingFileHandler('logs/microblog.log', maxxBytes=10240, backupCount=10)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d'))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
 
-#TO TEST API - CAN"T FIGURE OUT YET
-# rapid.call('NasaAPI', 'getPictureOfTheDay', {'{}'})
-
-
-# API
-# from requests_html import HTMLSession
-# session = HTMLSession()
-
-# response = session.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?number=5&ingredients=apples%2Cflour%2Csugar&ranking=1",
-#                        headers={
-#                            "X-Mashape-Key": "OcWXtWKiwJmsh9je6Ev8yYDRO2Bpp1bHFrqjsnMcAjT0dmqtZg",
-#                            "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
-#                        }
-#                        )
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('Microblog startup')

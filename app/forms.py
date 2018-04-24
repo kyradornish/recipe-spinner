@@ -32,13 +32,16 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class EditProfileForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
-    about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
-    submit = SubmitField('Submit')
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Update')
 
-    def __init__(self, original_username, *args, **kwargs):
+    def __init__(self, original_username, original_email, * args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
         self.original_username = original_username
+        self.original_email = original_email
 
     def validate_username(self, username):
         if username.data != self.original_username:
@@ -46,8 +49,23 @@ class EditProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError('Please use a different username.')
 
+    def validate_email(self, email):
+        if email.data != self.original_email:
+            user = User.query.filter_by(email=self.email.data).first()
+            if user is not None:
+                raise ValidationError('Please use a different username.')
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Request Password Reset')
+
 class RecipeSearch(FlaskForm):
-    ingredient = StringField('Ingredient: ', validators=[DataRequired()])
+    ingredient = StringField('Add Ingredient: ', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 def getRecipeByIngredients(ingredients):
@@ -55,7 +73,7 @@ def getRecipeByIngredients(ingredients):
         'fillIngredients': False,
         'ingredients': ingredients,
         'limitLicense': False,
-        'number': 6,
+        'number': 9,
         'ranking': 1
     }
 

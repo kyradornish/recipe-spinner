@@ -45,3 +45,9 @@ $("#search_recipes").submit(evt => {
     $("#results").css("display", "block");
 });
 
+
+//Alternative image load for results
+
+function standby() {
+    document.getElementById('foo').src = 'https://www.google.com/images/srpr/logo11w.png'
+}

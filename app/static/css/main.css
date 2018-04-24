@@ -4,6 +4,7 @@ header {
     max-width: 100%;
     width: 100%;
     height: 57px;
+    padding-left: 0px;
     /* position: fixed;
     top: 0; */
     /* transition: top 0.2s ease-in-out;
@@ -45,7 +46,8 @@ body {
 }
 
 .main {
-    width: 800px;
+    width: 80%;
+    max-width: 800px;
     margin: 0 auto;
     margin-top: 30px;
     margin-bottom: 100px;
@@ -70,6 +72,7 @@ body {
 
 .main input[type=submit] {
     width: 20%;
+    min-width: 150px;
     color: #52627c;
 }
 
@@ -89,6 +92,61 @@ body {
 
 .main ul {
     color: gray;
+}
+
+.homeimage {
+    filter: contrast(50%);
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    min-width: 900px;
+    min-height: 500px;
+}
+
+.home {
+    width: 80%;
+    max-width: 800px;
+    font-family: "Century Gothic", "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+    color: white;
+    position: absolute;
+    top: 20%;
+    text-align: center;
+    padding-right: 0px;
+}
+
+.home h1 {
+    font-size: 500%;
+    color: white;
+    padding-top: 10px;
+}
+
+.home p {
+    font-size: 1.5em;
+    color: white;
+}
+
+.home input {
+    padding: 12px 20px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+}
+
+.home input[type=text]:focus {
+    border: 1px solid #555;
+    min-width: 150px;
+}
+
+.home input[type=submit] {
+    width: 20%;
+    min-width: 150px;
+    color: #52627c;
+}
+
+.home input[type=submit]:hover {
+    background-color: lightgray;
+    border: 1px solid lightgray;
+    color: #ff9980;
 }
 
 .addinfo a {
@@ -167,67 +225,18 @@ body {
     color: gray;
 }
 
+.edit-profile {
+    float: right;
+}
+
 .recipe_img {
-    max-width: 350px;
-    max-height: 350px;    
+    width: 350px;  
 }
 
 .centertext {
     text-align: center;
 }
 
-.homeimage {
-    filter: contrast(50%);
-    width: 100%;
-    height: 100%;
-    padding: 0px;
-    margin: 0px;
-}
-
-.home {
-    width: 800px;
-    font-family: "Century Gothic", "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-    color: white;
-    position: absolute;
-    top: 15%;
-    left: 17%;
-    text-align: center;
-}
-
-.home h1 {
-    font-size: 6em;
-    color: white;
-    padding-top: 10px;
-}
-
-.home p {
-    font-size: 1.5em;
-    color: white;
-}
-
-
-.home input {
-    width: 100%;
-    padding: 12px 20px;
-    border: 1px solid lightgray;
-    margin: 7px;
-    border-radius: 4px;
-}
-
-.home input[type=text]:focus {
-    border: 1px solid #555;
-}
-
-.home input[type=submit] {
-    width: 20%;
-    color: #52627c;
-}
-
-.home input[type=submit]:hover {
-    background-color: lightgray;
-    border: 1px solid lightgray;
-    color: #ff9980;
-}
 
 .login input {
     padding: 5px;
@@ -274,4 +283,12 @@ footer a:hover {
 .deleteingredient {
     margin: 0px;
     padding: 3px;
+}
+
+.pinklink a{
+    color: #ff9980;
+}
+
+.pinklink a:hover {
+    color: #fc7c5c;
 }

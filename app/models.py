@@ -2,6 +2,10 @@ from app import app, db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import ForeignKey
+import jwt
+from datetime import datetime
+from hashlib import md5
+from time import time
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

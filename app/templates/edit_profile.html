@@ -16,17 +16,9 @@
     {% endwith %}
     <div class = "main login">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 offset-md-3">
                 <h1>{{ title }}</h1>
-                {{ wtf.quick_form(form) }}<br>
-                <p class="pinklink">New User?
-                    <a href="{{ url_for('register') }}">Register!</a><br>
-                    Forgot Your Password?
-                    <a href="{{ url_for('reset_password_request') }}">Reset It</a>
-                </p>
-            </div>
-            <div class="col-md-6">
-                <br><img src="/static/images/login.jpg" class="img-fluid">
+                {{ wtf.quick_form(form) }}
             </div>
         </div>
     </div>

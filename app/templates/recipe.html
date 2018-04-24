@@ -28,7 +28,10 @@
     <div class="row recipe">
         <div class="col-md-6">
             <img src="{{ result['image'] }}" class="recipe_img img-fluid">
-            <div class="addinfo">
+            {% if result['image'] == Null %}
+                <img class="resultimg img-fluid" src="/../static/images/large_logo.png">
+            {% endif %}
+            <div class="addinfo pinklink">
                     <a href="{{ result['sourceUrl'] }}" target="_blank">Source Recipe</a>
                     <a href="{{ url_for('save', r_id=result['id']) }}">Save Recipe</a>
             </div>
@@ -57,9 +60,10 @@
             {% for i in result['analyzedInstructions'] %}
                 {% for f in i['steps'] %}
                         <li>{{ f['step'] }}</li>
-                    {% endfor %} 
-                {% endfor %}
+                {% endfor %} 
+            {% endfor %}
         </ul>
+        <p class="pinklink">Find more information about recipe <a href="{{ result['sourceUrl'] }}" target="_blank">here</a>.</p>
         {% endfor %}
         </div>
     </div>
