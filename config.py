@@ -1,8 +1,7 @@
 import os
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = "posgresql://kyra:15342282.k@kyradornish-748.postgres.pythonanywhere-services.com:10748/recipespinnerdb"
-    SQLALCHEMY_POOL_RECYCLE = 299
+    SQLALCHEMY_DATABASE_URI = 'postgresql://kyra:ladies1271@localhost:5433/recipe_spinner'
 
     SECRET_KEY = 'super-secret'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -13,6 +12,3 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['kyradornish@gmail.com']
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
-
-
-# 'postgresql://kyra:ladies1271@localhost:5433/recipe_spinner'
