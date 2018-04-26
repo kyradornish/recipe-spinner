@@ -97,7 +97,7 @@ body {
 .homebody{
     background-image: url('/static/images/homebackground.jpg');
     background-color: lightgray;
-    min-height: 600px;
+    min-height: 660px;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -111,7 +111,7 @@ body {
     top: 20%;
     text-align: center;
     padding-right: 0px;
-    /* margin-top: 10%; */
+    margin-top: 10%;
 }
 
 .home h1 {
