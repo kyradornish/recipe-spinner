@@ -96,7 +96,6 @@ body {
 
 .homebody{
     background-image: url('/static/images/homebackground.jpg');
-    background-repeat: norepeat;
     background-color: lightgray;
     min-height: 600px;
     background-repeat: no-repeat;
@@ -112,7 +111,7 @@ body {
     top: 20%;
     text-align: center;
     padding-right: 0px;
-    margin-top: 10%;
+    /* margin-top: 10%; */
 }
 
 .home h1 {
