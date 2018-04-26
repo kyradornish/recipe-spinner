@@ -95,7 +95,7 @@ body {
 }
 
 .homebody{
-    background-image: url('/static/images/homebackground.jpg');
+    background-image: url(/static/images/homebackground.jpg);
     background-color: lightgray;
     min-height: 660px;
     background-size: cover;
