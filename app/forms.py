@@ -73,7 +73,7 @@ def getRecipeByIngredients(ingredients):
         'fillIngredients': False,
         'ingredients': ingredients,
         'limitLicense': False,
-        'number': 9,
+        'number': 18,
         'ranking': 1
     }
 
