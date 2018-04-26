@@ -9,6 +9,8 @@ from app.email import send_password_reset_email
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    if "ingredients" not in session:
+        session["ingredients"] = []
     session["ingredients"].clear()
     form = RecipeSearch()
     if form.validate_on_submit():
