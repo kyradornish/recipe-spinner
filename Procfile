@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn recipe-spinner:app
+web: flask db upgrade; gunicorn main:app
