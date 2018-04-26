@@ -115,11 +115,11 @@ body {
     max-width: 800px;
     font-family: "Century Gothic", "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
     color: white;
-    position: absolute;
-    top: 20%;
+    /* position: absolute;
+    top: 20%; */
     text-align: center;
     padding-right: 0px;
-    /* margin-top: 10%; */
+    margin-top: 10%;
 }
 
 .home h1 {
