@@ -19,18 +19,22 @@
 
     <div class="row">
         <div class="col-md-12 results deleteingredient"> 
-            Find a recipe using ingredients you already have!
+            <div class="row">
+                <div class="col-md-10">
+                    Add another ingredient here to find more tailored options.
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ url_for('clear') }}">
+                        <button type="button" class="btn btn-sm btn-new pull-right">New Search</button>
+                    </a>
+                </div>
+            </div>
              {{ wtf.quick_form(form) }}
              <div class="row">
                 <div class="col-md-10">
                 {% for ingredient in ingredients %}
                     <a href="{{ url_for('results', ingredient=ingredient, remove=ingredient )}}"><img src="/static/images/circle-x-2x.png" class="deleteingredient"></a>{{ ingredient }}
                 {% endfor %}
-                </div>
-                <div class="col-md-2">
-                <a href="{{ url_for('clear') }}">
-                    <button type="button" class="btn btn-sm btn-new pull-right">New Search</button>
-                </a>
                 </div>
             </div>
             <hr>

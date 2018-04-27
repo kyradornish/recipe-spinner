@@ -65,8 +65,8 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Request Password Reset')
 
 class RecipeSearch(FlaskForm):
-    ingredient = StringField('Add Ingredient: ', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    ingredient = StringField('Ingredient: ', validators=[DataRequired()])
+    # submit = SubmitField('Submit')
 
 def getRecipeByIngredients(ingredients):
     payload = {
