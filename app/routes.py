@@ -47,6 +47,7 @@ def results(ingredient, remove):
     recipeinfo = []
     for id in resultid:
         recipeinfo.append(getRecipeURL(id))
+    print(recipeinfo)
     return render_template('results.html', results=resultjson, recipeinfo=recipeinfo, ingredients=ingredients, form=form, title="Results")    
 
 @app.route("/recipe/<r_id>")

@@ -47,7 +47,7 @@
             <h3>Ingredients:</h3>
             <ul>
                 {% for i in result['extendedIngredients'] %}
-                <li>{{ i['originalString'] }}</li>
+                <li>{{ i['original'] }}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -63,7 +63,11 @@
                 {% endfor %} 
             {% endfor %}
         </ul>
-        <p class="pinklink">Find more information about recipe <a href="{{ result['sourceUrl'] }}" target="_blank">here</a>.</p>
+        {% if result['analyzedInstructions'] == [] %}
+            <p class="pinklink">Find step by step instructions <a href="{{ result['sourceUrl'] }}" target="_blank">here</a>.</p>
+            {% else %}
+             <p class="pinklink">Find more information about this recipe <a href="{{ result['sourceUrl'] }}" target="_blank">here</a>.</p>
+        {% endif %}
         {% endfor %}
         </div>
     </div>
